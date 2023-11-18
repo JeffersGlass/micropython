@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Micropython</title>
+  </head>
+  <body>
+    <pre id="micropython-stdout"></pre>
+    <script type="module">
+      document.addEventListener("micropython-print", function(e) {
+        let output = document.getElementById("micropython-stdout");
+        output.innerText += new TextDecoder().decode(e.detail);
+      }, false);
+
+      import { loadMicroPython } from "./build/micropython.mjs"
+
+      async function main() {
+        const io = {
+            stdout: (line) => console.log(line),
+            stderr: (line) => console.error(line),
+            url: "./build/micropython.wasm"
+        }
+        let mp = await loadMicroPython(io);
+        // Pyodide is now ready to use...
+        const url = 'http://127.0.0.1:5500/lib/micropython-lib/python-stdlib/keyword/keyword.py'
+        console.log(`test install from ${url}`)
+        mp.runPython(`
+        import mip
+        mip.install('${url}')
+        `)
+        };
+        main();
+    </script>
+  </body>
+</html>

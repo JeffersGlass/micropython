@@ -22,3 +22,8 @@ require("pathlib")
 require("stat")
 require("unittest")
 require("uu")
+
+package("urequests")
+# Import raw package instead of using 'require', so as to 
+# avoid using mip's manifest.py file
+package("mip", base_path="$(MPY_LIB_DIR)/micropython/mip")
