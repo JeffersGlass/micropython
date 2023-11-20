@@ -5,7 +5,6 @@ var __dirname = "";
 */
 
 export async function loadMicroPython(options) {
-    console.log("Running custom loadMicroPython\n", new Date())
     const {heapsize, url, stdin, stdout, stderr} = Object.assign({heapsize: 1024 * 1024}, options);
     const Module = {};
     Module.locateFile = (path, scriptDirectory) => url || path;

@@ -1,13 +1,3 @@
-import('../../build/micropython.mjs').then(mp=>{
-mp.loadMicroPython({url:"../../build/micropython.wasm"}).then(py=>{
-    py.runPython("import sys");
-    py.runPython("print(sys.modules)");
-    py.runPython("import mip");
-    py.runPython("mip.install(keyword)); import keyword");
-    py.runPython("print(keyword.kwlist")
-});
-});
-
 /*
 Tests to write once tests are running successfully:
 mip.install("pkgname")  # Installs the latest version of "pkgname" (and dependencies)
