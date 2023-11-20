@@ -1,36 +1,6 @@
 from uio import StringIO
 
 class Response:
-    def __init__(self, status_code, headers, body):
-        self.status_code = status_code
-        self.headers = headers
-        self.body = body
-
-    @property
-    def text(self):
-        return str(self.content, self.encoding)
-
-    @property
-    def raw(self):
-        return StringIO(self.body)
-
-    def json(self):
-        import ujson
-
-        return ujson.loads(self.content)
-
-    def close(self):
-        pass
-
-    
-    #status_code: int
-    #headers: Dict[str, str]
-    #body: bytes
-
-"""
-Oriinal implementation
-
-class Response:
     def __init__(self, f):
         self.raw = f
         self.encoding = "utf-8"
@@ -42,11 +12,8 @@ class Response:
         return ujson.loads(self.content)
 
     def close(self):
-        return
-        if self.raw:
-            self.raw.close()
-            self.raw = None
-        self._cached = None
+        # There is no stream to close; this is preserved as a no-op for compatibility
+        pass
 
     @property
     def content(self):
@@ -66,4 +33,3 @@ class Response:
         import ujson
 
         return ujson.loads(self.content)
-"""

@@ -21,11 +21,12 @@
         }
         let mp = await loadMicroPython(io);
         // Pyodide is now ready to use...
-        const url = 'http://127.0.0.1:5500/lib/micropython-lib/python-stdlib/keyword/keyword.py'
+        const url = 'http://127.0.0.1:5500/lib/micropython-lib/python-stdlib/keyword/'
         console.log(`test install from ${url}`)
         mp.runPython(`
         import mip
         mip.install('${url}')
+        import keyword
         `)
         };
         main();

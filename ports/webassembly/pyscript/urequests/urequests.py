@@ -6,6 +6,7 @@ except Exception as err:
 # TODO try to support streaming xhr requests, a-la pyodide-http
 
 from .response import Response
+from uio import StringIO
 
 HEADERS_TO_IGNORE = ("user-agent",)
 
@@ -26,8 +27,6 @@ def request(
     xhr = XMLHttpRequest.new()
     xhr.withCredentials = False
 
-    print("About to open")
-
     if auth is not None:
         import ubinascii
 
@@ -41,8 +40,34 @@ def request(
             xhr.setRequestHeader(name, value)
 
     xhr.send(data)
+    
+    # Emulates the construction process in the original urequests
+    resp = Response(StringIO(xhr.responseText))
+    resp.status_code = xhr.status
+    resp.reason = xhr.statusText
+    resp.headers = xhr.getAllResponseHeaders()
 
-    return Response(xhr.status, {}, xhr.responseText)
+    return resp
+
+def head(url, **kw):
+    return request("HEAD", url, **kw)
+
 
 def get(url, **kw):
     return request("GET", url, **kw)
+
+
+def post(url, **kw):
+    return request("POST", url, **kw)
+
+
+def put(url, **kw):
+    return request("PUT", url, **kw)
+
+
+def patch(url, **kw):
+    return request("PATCH", url, **kw)
+
+
+def delete(url, **kw):
+    return request("DELETE", url, **kw)
