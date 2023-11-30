@@ -1,7 +1,7 @@
 try:
     import js
 except Exception as err:
-    raise OSError("This version of requests can only be used in the browser")
+    raise OSError("This version of urequests can only be used in the browser")
 
 # TODO try to support streaming xhr requests, a-la pyodide-http
 
@@ -38,6 +38,16 @@ def request(
     for name, value in headers.items():
         if name.lower() not in HEADERS_TO_IGNORE:
             xhr.setRequestHeader(name, value)
+
+    if timeout: xhr.timeout = int(timeout * 1000)
+
+    if json is not None:
+        assert data is None
+        import ujson
+
+        data = ujson.dumps(json)
+        #s.write(b"Content-Type: application/json\r\n")
+        xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send(data)
     
